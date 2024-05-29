@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "osm"
+version = "0.1.0"
+description = ""
+authors = ["Fab <fabian@fabianhaupt.de>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+osmnx = "^1.9.3"
+pyrosm = "^0.6.2"
+svgwrite = "^1.4.3"
+matplotlib = "^3.9.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
