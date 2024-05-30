@@ -12,6 +12,7 @@ logger = logging.getLogger(__name__)
 
 PBF_FILE = "us-northeast-latest.osm.pbf"
 
+
 def load_gpx(gpx_file):
     """
     Loads a GPX file and returns a list of LineString objects, one for each track.
@@ -22,7 +23,7 @@ def load_gpx(gpx_file):
     Returns:
         A list of shapely.geometry.LineString objects representing the tracks.
     """
-    with open(gpx_file, 'r') as f:
+    with open(gpx_file, 'r',encoding='utf-8') as f:
         gpx = gpxpy.parse(f)
 
     tracks = []  # List to store LineString objects for each track
@@ -40,7 +41,7 @@ def load_gpx(gpx_file):
     return tracks
 
 
-def plot_gpx_track(gpx_file, plt):
+def plot_gpx_track(gpx_file, plt_object):
     """
     Loads and plots GPX tracks on the given matplotlib axes.
 
@@ -51,7 +52,7 @@ def plot_gpx_track(gpx_file, plt):
     tracks = load_gpx(gpx_file)  # Get the list of LineString objects
 
     for track in tracks:  # Iterate through tracks
-        plt.plot(*track.xy, color="blue", lw=2, alpha=0.8)
+        plt_object.plot(*track.xy, color="blue", lw=2, alpha=0.8)
 
 
 
