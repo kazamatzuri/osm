@@ -1,6 +1,7 @@
 # osm/osm.py
 
 import logging
+import os
 
 import matplotlib.pyplot as plt
 import shapely.geometry as geom
@@ -13,36 +14,45 @@ PBF_FILE = "us-northeast-latest.osm.pbf"
 
 def load_gpx(gpx_file):
     """
-    Loads a GPX file and returns a list of coordinates.
+    Loads a GPX file and returns a list of LineString objects, one for each track.
 
     Args:
         gpx_file: Path to the GPX file.
 
     Returns:
-        A list of (longitude, latitude) tuples representing the track.
+        A list of shapely.geometry.LineString objects representing the tracks.
     """
     with open(gpx_file, 'r') as f:
         gpx = gpxpy.parse(f)
 
-    trackpoints = []
+    tracks = []  # List to store LineString objects for each track
+
     for track in gpx.tracks:
+        trackpoints = []  # List to store points for the current track
         for segment in track.segments:
             for point in segment.points:
                 trackpoints.append((point.longitude, point.latitude))
 
-    return trackpoints
+        # Create a LineString for the current track and add it to the list
+        track_line = geom.LineString(trackpoints)
+        tracks.append(track_line)
+
+    return tracks
+
 
 def plot_gpx_track(gpx_file, plt):
     """
-    Loads and plots a GPX track on the given matplotlib axes.
+    Loads and plots GPX tracks on the given matplotlib axes.
 
     Args:
         gpx_file: Path to the GPX file.
         ax: The matplotlib axes object to plot on.
     """
-    trackpoints = load_gpx(gpx_file)
-    track_line = geom.LineString(trackpoints)
-    plt.plot(*track_line.xy, color="blue", lw=2, alpha=0.8)
+    tracks = load_gpx(gpx_file)  # Get the list of LineString objects
+
+    for track in tracks:  # Iterate through tracks
+        plt.plot(*track.xy, color="blue", lw=2, alpha=0.8)
+
 
 
 def main():
@@ -84,16 +94,39 @@ def main():
     # Create a new figure
     fig, ax = plt.subplots(figsize=(16, 12))
 
-    # Load the GPX track
-
-    gpx_file = "gpx/bbr 101 ride.gpx"  # Replace with your GPX file path
-
-
-    plot_gpx_track(gpx_file, plt)  # Pass the ax object
-
 
     # Plot the roads
     map_data.plot(color="k", ax=ax, lw=0.7, alpha=0.6)
+
+    # ... (rest of your code)
+    
+    city_labels = []
+    for index, row in map_data.iterrows():
+        if row.geometry.geom_type == "Point" and "place" in row and row["place"] == "city":
+            # Extract city name and coordinates from the 'row'
+            city_name = row.get("name", "Unnamed City")
+            city_labels.append((row.geometry.x, row.geometry.y, city_name))
+
+    
+
+    
+    # Plot city labels
+    for x, y, label in city_labels:
+        plt.annotate(label, xy=(x, y), xytext=(3, 3), textcoords="offset points")
+    
+    # Load the GPX track
+
+    gpx_dir = "gpx"
+
+    # Loop through GPX files
+    for filename in os.listdir(gpx_dir):
+        if filename.endswith(".gpx"):
+            gpx_file = os.path.join(gpx_dir, filename)
+            plot_gpx_track(gpx_file, plt)  # Pass the ax object
+
+
+
+
 
     # Save the figure as an SVG file
     output_file = "roads.svg"
