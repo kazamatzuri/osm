@@ -513,6 +513,17 @@ pyproj = ">=3.3.0"
 shapely = ">=1.8.0"
 
 [[package]]
+name = "gpxpy"
+version = "1.6.2"
+description = "GPX file parser and GPS track manipulation library"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "gpxpy-1.6.2-py3-none-any.whl", hash = "sha256:289bc2d80f116c988d0a1e763fda22838f83005573ece2bbc6521817b26fb40a"},
+    {file = "gpxpy-1.6.2.tar.gz", hash = "sha256:a72c484b97ec42b80834353b029cc8ee1b79f0ffca1179b2210bb3baf26c01ae"},
+]
+
+[[package]]
 name = "identify"
 version = "2.5.36"
 description = "File identification library for Python"
@@ -1508,4 +1519,4 @@ test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "08903fbe0f221059cbc1d4b39b50344a62edc2d687def97bd3f4278a6e713d29"
+content-hash = "e9561355518291a9c815f86239f5464d53b5654eb0e9d55a1b1b45cce29a621f"

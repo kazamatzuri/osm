@@ -1,5 +1,5 @@
 *.pbf
-
+*.gpx
 # .gitignore
 
 # Byte-compiled / optimized / DLL files
@@ -17,6 +17,7 @@ develop-eggs/
 dist/
 downloads/
 eggs/
+*.svg
 .eggs/
 lib/
 lib64/
